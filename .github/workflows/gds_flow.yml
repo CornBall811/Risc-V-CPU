@@ -8,16 +8,19 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Run OpenLane 2
+      - name: Setup OpenLane 2
+        uses: theopenlane/setup-openlane@v1
+        with:
+          # This ensures the environment is actually active
+          openlane_version: latest
+
+      - name: Run Hardening
         run: |
-          docker run --rm \
-            -v $(pwd):/work \
-            -w /work \
-            efabless/openlane:latest \
-            openlane --config ./openlane/config.json --pdk sky130A
+          openlane --config ./openlane/config.json --pdk sky130A
           
       - name: Upload GDSII
         uses: actions/upload-artifact@v4
         with:
           name: RV32I_GDSII
+          # OpenLane 2 puts everything in a timestamped run folder
           path: runs/*/final/gds/*.gds
