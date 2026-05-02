@@ -1,0 +1,9 @@
+[project]
+name = "rv32i_core"
+top_module = "topLevel"
+verilog_files = ["*.v"] # Or list them individually
+
+[target]
+pdk = "sky130A" # Default for most open-source flows
+target_density = 0.55
+clock_period = 10.0
