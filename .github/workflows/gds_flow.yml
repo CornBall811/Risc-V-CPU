@@ -8,17 +8,17 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Run OpenLane
+      - name: Run OpenLane 2
         run: |
-          # We mount your repo to /work and run the tool from its internal home
           docker run --rm \
             -v $(pwd):/work \
             -w /work \
             efabless/openlane:latest \
-            /openlane/flow.tcl -design ./openlane -overwrite
-
+            python3 -m openlane --config ./openlane/config.json --pdk sky130A
+          
       - name: Upload GDSII
         uses: actions/upload-artifact@v4
         with:
           name: RV32I_GDSII
-          path: openlane/runs/*/results/final/gds/*.gds
+          # OpenLane 2 output paths are slightly different, this wildcard finds it:
+          path: runs/*/final/gds/*.gds
