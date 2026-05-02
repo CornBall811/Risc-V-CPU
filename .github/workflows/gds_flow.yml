@@ -8,19 +8,24 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup OpenLane 2
-        uses: theopenlane/setup-openlane@v1
+      - name: Set up Openlane CLI
+        uses: theopenlane/setup-openlane@v0.0.1
         with:
-          # This ensures the environment is actually active
-          openlane_version: latest
+          version: 'v0.45.10' # The stable 2026 CLI version
+
+      - name: Verify Environment
+        run: |
+          openlane --version
+          volare --version
 
       - name: Run Hardening
         run: |
+          # This command triggers the OpenLane 2 flow using your config
           openlane --config ./openlane/config.json --pdk sky130A
           
       - name: Upload GDSII
         uses: actions/upload-artifact@v4
         with:
           name: RV32I_GDSII
-          # OpenLane 2 puts everything in a timestamped run folder
+          # Path for OpenLane 2 output
           path: runs/*/final/gds/*.gds
