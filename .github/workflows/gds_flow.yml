@@ -14,11 +14,10 @@ jobs:
             -v $(pwd):/work \
             -w /work \
             efabless/openlane:latest \
-            python3 -m openlane --config ./openlane/config.json --pdk sky130A
+            openlane --config ./openlane/config.json --pdk sky130A
           
       - name: Upload GDSII
         uses: actions/upload-artifact@v4
         with:
           name: RV32I_GDSII
-          # OpenLane 2 output paths are slightly different, this wildcard finds it:
           path: runs/*/final/gds/*.gds

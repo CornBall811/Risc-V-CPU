@@ -12,5 +12,5 @@
         "src/regFile.v"
     ],
     "CLOCK_PORT": "clk",
-    "CLOCK_PERIOD": 20.0
+    "CLOCK_PERIOD": 20
 }
