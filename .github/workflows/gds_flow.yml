@@ -4,21 +4,21 @@ on: [push]
 jobs:
   openlane_build:
     runs-on: ubuntu-latest
-    container:
-      # This pulls the actual tool directly
-      image: efabless/openlane:latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Run Hardening
+      - name: Run OpenLane (Hardening)
+        # We run the docker command directly as a script step
         run: |
-          # We tell OpenLane to process the folder we created
-          ./flow.tcl -design . -design_dir ./openlane -init_design_config -overwrite
-          
+          docker run --rm \
+            -v $(pwd):/openlane_design \
+            -w /openlane_design \
+            efabless/openlane:v0.48 \
+            bash -c "./flow.tcl -design ./openlane -overwrite"
+
       - name: Upload GDSII
         uses: actions/upload-artifact@v4
         with:
           name: RV32I_GDSII
-          # This path is where OpenLane 1.x/2.x usually dumps the GDS
           path: openlane/runs/*/results/final/gds/*.gds
