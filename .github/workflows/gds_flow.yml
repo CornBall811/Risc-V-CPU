@@ -1,22 +1,24 @@
-name: Generate GDSII
+name: GDSII Flow
 on: [push]
 
 jobs:
-  build:
+  openlane_build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Install OpenLane CLI
-        uses: theopenlane/setup-openlane@v0.45.10
-
-      - name: Run Hardening Flow
-        run: |
-          openlane --design-dir ./openlane
+      - name: Run OpenLane
+        # This is the real silicon action
+        uses: The-OpenROAD-Project/actions/openlane_run@main
+        with:
+          design_dir: ./openlane
+          # This specifies the "factory" (PDK)
+          pdk_variant: sky130A
           
-      - name: Upload GDSII Artifact
+      - name: Upload GDSII
         uses: actions/upload-artifact@v4
         with:
           name: RV32I_GDSII
+          # This finds the final GDS file in the run folder
           path: openlane/runs/*/results/final/gds/*.gds
