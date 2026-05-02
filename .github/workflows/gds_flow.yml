@@ -4,21 +4,21 @@ on: [push]
 jobs:
   openlane_build:
     runs-on: ubuntu-latest
+    container:
+      # This pulls the actual tool directly
+      image: efabless/openlane:latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4.2.2  # Updated for Node 24 support
+        uses: actions/checkout@v4
 
-      - name: Run OpenLane
-        uses: efabless/openlane-main-action@v2
-        with:
-          # In this action, these are the correct input names:
-          install_pdk: true
-          pdk: sky130A
-          design_dir: ./openlane
+      - name: Run Hardening
+        run: |
+          # We tell OpenLane to process the folder we created
+          ./flow.tcl -design . -design_dir ./openlane -init_design_config -overwrite
           
       - name: Upload GDSII
-        uses: actions/upload-artifact@v4.6.0 # Updated for Node 24 support
+        uses: actions/upload-artifact@v4
         with:
           name: RV32I_GDSII
-          # Artifact path for the efabless action
+          # This path is where OpenLane 1.x/2.x usually dumps the GDS
           path: openlane/runs/*/results/final/gds/*.gds
