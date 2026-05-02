@@ -6,18 +6,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v6 # Updated for Node 24 support
+        uses: actions/checkout@v4
 
-      - name: Run OpenLane (Hardening)
+      - name: Run OpenLane
         run: |
+          # We mount your repo to /work and run the tool from its internal home
           docker run --rm \
-            -v $(pwd):/openlane_design \
-            -w /openlane_design \
-            ghcr.io/the-openroad-project/openlane:latest \
-            bash -c "./flow.tcl -design ./openlane -overwrite"
+            -v $(pwd):/work \
+            -w /work \
+            efabless/openlane:latest \
+            /openlane/flow.tcl -design ./openlane -overwrite
 
       - name: Upload GDSII
-        uses: actions/upload-artifact@v5 # Updated for Node 24 support
+        uses: actions/upload-artifact@v4
         with:
           name: RV32I_GDSII
           path: openlane/runs/*/results/final/gds/*.gds
