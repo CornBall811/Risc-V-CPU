@@ -8,24 +8,23 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Openlane CLI
-        uses: theopenlane/setup-openlane@v0.0.1
-        with:
-          version: 'v0.45.10' # The stable 2026 CLI version
-
-      - name: Verify Environment
+      - name: Download OpenLane Core
         run: |
-          openlane --version
-          volare --version
+          # Use the URL you provided
+          curl -L https://github.com/theopenlane/core/archive/refs/tags/v1.18.5.zip -o openlane_core.zip
+          unzip openlane_core.zip
+          # The folder inside the zip is usually 'core-1.18.5'
+          mv core-1.18.5 openlane_tools
 
       - name: Run Hardening
         run: |
-          # This command triggers the OpenLane 2 flow using your config
+          # Running the tool from the downloaded source
+          # OpenLane 2 CLI usually requires the Python environment
+          pip install ./openlane_tools
           openlane --config ./openlane/config.json --pdk sky130A
           
       - name: Upload GDSII
         uses: actions/upload-artifact@v4
         with:
           name: RV32I_GDSII
-          # Path for OpenLane 2 output
           path: runs/*/final/gds/*.gds
