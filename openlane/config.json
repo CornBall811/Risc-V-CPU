@@ -1,0 +1,20 @@
+{
+    "PDK": "sky130A",
+    "DESIGN_NAME": "topLevel",
+    "VERILOG_FILES": [
+        "dir::../src/topLevel.v",
+        "dir::../src/alu.v",
+        "dir::../src/decoder.v",
+        "dir::../src/immGen.v",
+        "dir::../src/instrMem.v",
+        "dir::../src/pc.v",
+        "dir::../src/ram.v",
+        "dir::../src/regFile.v"
+    ],
+    "CLOCK_PORT": "clk",
+    "CLOCK_PERIOD": 20.0,
+    "FP_CORE_UTIL": 40,
+    "SYNTH_STRATEGY": "AREA 0",
+    "PL_TARGET_DENSITY": 0.45,
+    "RT_MAX_LAYER": "met4"
+}

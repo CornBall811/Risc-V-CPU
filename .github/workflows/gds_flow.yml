@@ -1,0 +1,22 @@
+name: Generate GDSII
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install OpenLane CLI
+        uses: theopenlane/setup-openlane@v0.45.10
+
+      - name: Run Hardening Flow
+        run: |
+          openlane --design-dir ./openlane
+          
+      - name: Upload GDSII Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RV32I_GDSII
+          path: openlane/runs/*/results/final/gds/*.gds

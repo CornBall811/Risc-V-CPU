@@ -1,0 +1,19 @@
+name: GDSII Flow
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run OpenLane
+        uses: efabless/openlane-main-action@v2
+        with:
+          design_dir: ./openlane
+          
+      - name: Upload GDSII
+        uses: actions/upload-artifact@v3
+        with:
+          name: GDSII_Output
+          path: openlane/runs/*/results/final/gds/*.gds

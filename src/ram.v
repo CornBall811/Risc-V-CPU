@@ -5,12 +5,10 @@ module ram (
 	input wire [31:0] din,	// Data from CPU
 	output wire [31:0] dout,// Data to CPU
 );
-	// Each bank is 2MB (2^21 = 2,097,152 entries)
-	// 4 banks * 2MB = 8MB total
-	reg [7:0] bank0 [0:2097151];
-	reg [7:0] bank1 [0:2097151];
-	reg [7:0] bank2 [0:2097151];
-	reg [7:0] bank3 [0:2097151];
+	reg [7:0] bank0 [0:255];
+	reg [7:0] bank1 [0:255];
+	reg [7:0] bank2 [0:255];
+	reg [7:0] bank3 [0:255];
 
 	// Word address
 	// Ignore bottom 2 bits for indexing banks. addr[1:0] technically
