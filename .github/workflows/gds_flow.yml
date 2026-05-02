@@ -14,13 +14,13 @@ jobs:
           curl -L https://github.com/theopenlane/core/archive/refs/tags/v1.18.5.zip -o openlane_core.zip
           unzip openlane_core.zip
           # The folder inside the zip is usually 'core-1.18.5'
-          mv core-1.18.5 openlane_tools
+          # mv core-1.18.5 openlane_tools
 
       - name: Run Hardening
         run: |
           # Running the tool from the downloaded source
           # OpenLane 2 CLI usually requires the Python environment
-          pip install ./openlane_tools
+          pip install ./core-1.18.5
           openlane --config ./openlane/config.json --pdk sky130A
           
       - name: Upload GDSII
